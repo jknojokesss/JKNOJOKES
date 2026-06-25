@@ -5,18 +5,21 @@ const nextConfig = {
     domains: ['lh3.googleusercontent.com', 'storage.googleapis.com'],
   },
   async rewrites() {
-    return [
-      {
-        source: '/',
-        has: [{ type: 'host', value: 'saratogashteibel.org' }],
-        destination: '/saratoga-home',
-      },
-      {
-        source: '/',
-        has: [{ type: 'host', value: 'www.saratogashteibel.org' }],
-        destination: '/saratoga-home',
-      },
-    ]
+    // beforeFiles so this runs BEFORE the filesystem route (index.js login page).
+    return {
+      beforeFiles: [
+        {
+          source: '/',
+          has: [{ type: 'host', value: 'saratogashteibel.org' }],
+          destination: '/saratoga-home',
+        },
+        {
+          source: '/',
+          has: [{ type: 'host', value: 'www.saratogashteibel.org' }],
+          destination: '/saratoga-home',
+        },
+      ],
+    }
   },
 }
 
