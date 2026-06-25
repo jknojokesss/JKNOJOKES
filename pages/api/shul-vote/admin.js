@@ -4,14 +4,15 @@
 // Once CLOSED: returns the full tally + who voted / who didn't.
 import { supabaseAdmin } from '../../../lib/supabaseAdmin'
 
-// Change this, or set SHUL_ADMIN_CODE in the environment to override.
-const ADMIN_CODE = process.env.SHUL_ADMIN_CODE || 'shul2026'
+// Passcode lives only in the SHUL_ADMIN_CODE environment variable (a Vercel
+// secret), never in source. Fails closed if the env var is missing.
+const ADMIN_CODE = process.env.SHUL_ADMIN_CODE
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' })
 
   const { passcode, action } = req.body || {}
-  if (passcode !== ADMIN_CODE) return res.status(401).json({ error: 'Wrong passcode.' })
+  if (!ADMIN_CODE || passcode !== ADMIN_CODE) return res.status(401).json({ error: 'Wrong passcode.' })
 
   try {
     if (action === 'close') {
