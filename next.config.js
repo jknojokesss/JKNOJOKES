@@ -21,6 +21,16 @@ const nextConfig = {
       ],
     }
   },
+  async redirects() {
+    // This repo now serves ONLY the Saratoga vote + donation. The leftover JK
+    // client-portal pages are dead weight here — bounce them to the donation
+    // home so the portal is unreachable from this domain.
+    return ['/dashboard', '/financials', '/reset-password'].map((source) => ({
+      source,
+      destination: '/saratoga-home',
+      permanent: false,
+    }))
+  },
 }
 
 module.exports = nextConfig
